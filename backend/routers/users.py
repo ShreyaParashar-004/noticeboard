@@ -30,3 +30,9 @@ def create_user(user: UserCreate):
             )
 
         return new_user
+
+@router.get("/", response_model=list[UserResponse])
+def get_users():
+    with Session(engine) as db:
+        users = db.query(User).order_by(User.created_at.desc()).all()
+        return users
