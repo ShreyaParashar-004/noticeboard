@@ -1,14 +1,5 @@
-# from fastapi import APIRouter
-# from schema import UserCreate, UserResponse
-
-# router = APIRouter(prefix="/users", tags=["users"])
-
-
-# @router.post("/", response_model=UserResponse)
-# def create_user(user: UserCreate):
-#     return user
-
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from database import engine
@@ -27,7 +18,15 @@ def create_user(user: UserCreate):
         )
 
         db.add(new_user)
-        db.commit()
-        db.refresh(new_user)
+
+        try:
+            db.commit()
+            db.refresh(new_user)
+        except IntegrityError:
+            db.rollback()
+            raise HTTPException(
+                status_code=409,
+                detail="A user with this email already exists."
+            )
 
         return new_user
