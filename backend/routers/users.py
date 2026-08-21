@@ -1,12 +1,15 @@
 from fastapi import APIRouter, HTTPException
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
+import bcrypt
+from pydantic import BaseModel
 
 from database import engine
 from model import User
-from schema import UserCreate, UserResponse
+from schema import UserCreate, UserResponse, LoginRequest
 
 router = APIRouter(prefix="/users", tags=["users"])
+
 
 # get
 
@@ -54,7 +57,11 @@ def create_user(user: UserCreate):
     with Session(engine) as db:
         new_user = User(
             name=user.name,
-            email=user.email
+            email=user.email,
+            password_hash=bcrypt.hashpw(
+                user.password.encode("utf-8"),
+                bcrypt.gensalt()
+            ).decode("utf-8")
         )
 
         db.add(new_user)
@@ -70,3 +77,42 @@ def create_user(user: UserCreate):
             )
 
         return new_user
+    
+# login 
+
+@router.post("/login")
+def login(user: LoginRequest):
+    with Session(engine) as db:
+        existing_user = (
+            db.query(User)
+            .filter(User.email == user.email)
+            .first()
+        )
+
+        if existing_user is None:
+            raise HTTPException(
+                status_code=401,
+                detail="Invalid email or password."
+            )
+
+        if not bcrypt.checkpw(
+            user.password.encode("utf-8"),
+            existing_user.password_hash.encode("utf-8")
+        ):
+            raise HTTPException(
+                status_code=401,
+                detail="Invalid email or password."
+            )
+
+        if not existing_user.approved:
+            raise HTTPException(
+                status_code=403,
+                detail="Your account has not been approved yet."
+            )
+
+        return {
+            "message": "Login successful",
+            "user_id": existing_user.id,
+            "name": existing_user.name,
+            "role": existing_user.role
+        }
