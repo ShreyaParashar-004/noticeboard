@@ -1,5 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Playfair+Display:wght@500;600;700&family=Caveat:wght@500;600&display=swap');
-
+/* @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Playfair+Display:wght@500;600;700&family=Caveat:wght@500;600&display=swap'); */
+@import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Playfair+Display:wght@500;600;700&family=Caveat:wght@500;600&display=swap");
 :root {
   font-family: "DM Mono", monospace;
   color: #46332f;
@@ -425,6 +425,101 @@ h1 {
   border: 2px solid #604941;
   background: #d7df9d;
   font-size: 11px;
+}
+
+.auth-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(55, 35, 30, 0.45);
+}
+
+.auth-box {
+  position: relative;
+  width: 380px;
+  padding: 40px;
+  background: #f1dfbf;
+  border: 3px solid #654641;
+  box-shadow: 9px 10px 0 #805c54;
+  transform: rotate(-1deg);
+}
+
+.auth-box h2 {
+  margin: 8px 0 25px;
+  font-size: 38px;
+}
+
+.auth-box form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.auth-box input {
+  padding: 13px;
+  border: 2px solid #76534a;
+  background: #f8eee0;
+  font: inherit;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  border: none;
+  background: none;
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.auth-submit {
+  padding: 13px;
+  border: 2px solid #654641;
+  background: #d7df9d;
+  cursor: pointer;
+  font: inherit;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(50, 30, 25, .45);
+}
+
+.modal-box {
+  width: 380px;
+  padding: 35px;
+  background: #f1dfbf;
+  border: 3px solid #654641;
+  box-shadow: 8px 8px 0 #805c54;
+}
+
+.modal-box h2 {
+  margin-top: 0;
+}
+
+.modal-box input {
+  width: 100%;
+  margin: 8px 0;
+  padding: 12px;
+  border: 2px solid #765044;
+  background: #fff8e9;
+  font: inherit;
+}
+
+.modal-box button {
+  margin-top: 10px;
+  padding: 8px 15px;
+  border: 2px solid #654641;
+  background: #d8df9b;
+  cursor: pointer;
 }
 
 /* FOOTER */

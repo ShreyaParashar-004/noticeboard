@@ -22,7 +22,7 @@ engine = create_engine(DATABASE_URL)
 
 # ---------------------------------------------------
 
-# Base.metadata.create_all(engine)
+Base.metadata.create_all(bind=engine)
 # print("Database tables created successfully.")
 
 
