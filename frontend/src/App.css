@@ -522,6 +522,45 @@ h1 {
   cursor: pointer;
 }
 
+
+.admin-box {
+  max-height: 80vh;
+  overflow: hidden;
+}
+
+.admin-users {
+  max-height: 58vh;
+  overflow-y: auto;
+  margin-top: 20px;
+  padding-right: 10px;
+}
+
+.admin-user {
+  padding: 18px 4px;
+  border-top: 2px dashed #a88672;
+}
+
+.admin-user:first-child {
+  border-top: none;
+  padding-top: 4px;
+}
+
+.admin-user p {
+  margin: 6px 0;
+  font-size: 12px;
+}
+
+.admin-user .admin-name {
+  margin-bottom: 10px;
+  font-family: "Playfair Display", serif;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.admin-user button {
+  margin-top: 10px;
+}
+
 /* FOOTER */
 
 footer {
