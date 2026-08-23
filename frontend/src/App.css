@@ -1,7 +1,10 @@
 /* @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Playfair+Display:wght@500;600;700&family=Caveat:wght@500;600&display=swap'); */
-@import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Playfair+Display:wght@500;600;700&family=Caveat:wght@500;600&display=swap");
+/* @import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Playfair+Display:wght@500;600;700&family=Caveat:wght@500;600&display=swap"); */
+/* @import url("https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&display=swap"); */
+@import url('https://googleapis.com');
+@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Yellowtail&display=swap");
 :root {
-  font-family: "DM Mono", monospace;
+  font-family: "Lobster", cursive;
   color: #46332f;
 }
 
@@ -21,25 +24,37 @@ button {
   min-height: 100vh;
   padding: 32px;
   background:
-    repeating-linear-gradient(
-      45deg,
-      #d8a5a7 0 12px,
-      #d19c9f 12px 24px
-    );
+  linear-gradient(
+    45deg,
+    #f5eee2 25%,
+    transparent 25%,
+    transparent 75%,
+    #f5eee2 75%
+  ),
+  linear-gradient(
+    45deg,
+    #f5eee2 25%,
+    transparent 25%,
+    transparent 75%,
+    #f5eee2 75%
+  ),
+  #a0a58f;
+
+background-size: 120px 120px;
+background-position: 0 0, 60px 60px;
 }
 
 /* HEADER */
 
-.topbar {
+/* .topbar {
   max-width: 1180px;
   margin: 0 auto 26px;
   padding: 22px 28px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #f4d8d2;
-  border: 3px solid #654641;
-  box-shadow: 7px 7px 0 #89615a;
+  background: #dea5a5;
+  border: 3px solid #4d332e;
 }
 
 .eyebrow,
@@ -48,12 +63,19 @@ button {
   margin: 0;
   font-size: 10px;
   letter-spacing: 2px;
-}
+} */
 
-h1,
+/* h1,
 h2,
 h3 {
-  font-family: "Playfair Display", serif;
+  font-family: "Beyond Wonderland", "The Nyodia", "Caveat", cursive;
+} */
+
+/* h1,
+h2,
+h3 {
+  font-family: "Caveat", cursive;
+  font-weight: 600;
 }
 
 h1 {
@@ -68,17 +90,98 @@ h1 {
 
 .account button {
   padding: 10px 17px;
-  border: 2px solid #654641;
+  border: 2px solid #49332f;
+  background: #f4eee1;
   cursor: pointer;
 }
 
-.login {
+.login,
+.signup {
+  background: #e3d4b3;
+} */
+
+
+/* HEADER */
+
+.topbar {
+  max-width: 1180px;
+  margin: 0 auto 26px;
+  padding: 22px 28px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
   background: transparent;
+  border: none;
+  box-shadow: none;
 }
 
-.signup {
-  background: #d8df9b;
-}
+  .eyebrow,
+  .small-label,
+  .post-type {
+    margin: 0;
+    font-size: 10px;
+    letter-spacing: 2px;
+  }
+
+
+  
+  h1,
+  h2,
+  h3 {
+    font-family: "Caveat", cursive;
+    font-weight: 600;
+  }
+
+  h1 {
+    font-family: "Yellowtail", cursive;
+    font-weight: 200;
+  }
+
+  h1 {
+    margin: 2px 0 0;
+    font-size: 144px;
+    font-family: "Yellowtail", cursive;
+    font-weight: 400;
+    letter-spacing: 0px;
+    /* vintage neon sign */
+    color: #fbf9f8;
+    /* text-shadow:
+      0 0 20px #ab0000,
+      0 0 60px #ff0008,
+      0 0 22px #dd3448,
+      0 0 4200px rgba(244, 45, 68, 0.75); */
+
+    text-shadow:
+      0 0 1px #8f0000,
+      0 0 5px #ff0008,
+      0 0 14px #e62f45,
+      0 0 32px #d51f38,
+      0 0 55px rgba(244, 45, 68, 0.85);
+  }
+
+  .account {
+    display: flex;
+    gap: 10px;
+    transform: translateY(100px);
+  }
+
+  .account button {
+    padding: 10px 17px;
+    border: 2px solid #654641;
+    cursor: pointer;
+    background: #f5eee2;
+  }
+
+  .login {
+    background: #f5eee2;
+  }
+
+  .signup {
+    background: #f5eee2;
+  }
+
 
 /* BOARD */
 
@@ -90,14 +193,29 @@ h1 {
   margin: auto;
   padding: 48px;
   border: 15px solid #765044;
-  background:
-    radial-gradient(circle, rgba(65, 42, 32, .16) 0 1px, transparent 1.5px),
-    radial-gradient(circle, rgba(255, 240, 210, .12) 0 1px, transparent 1.5px),
-    #ad756e;
-  background-size: 13px 13px, 19px 19px;
-  box-shadow:
-    10px 11px 0 #805c54,
-    inset 0 0 28px rgba(52, 29, 23, .35);
+
+ background:
+  repeating-linear-gradient(
+    0deg,
+    rgba(72, 43, 31, .18) 0px,
+    rgba(72, 43, 31, .18) 2px,
+    rgba(130, 83, 67, .10) 3px,
+    rgba(130, 83, 67, .10) 7px,
+    transparent 1000px,
+    transparent 1800px
+  ),
+  repeating-linear-gradient(
+    0deg,
+    transparent 200px,
+    transparent 305px,
+    rgba(65, 38, 27, .18) 36px,
+    rgba(65, 38, 27, .18) 38px,
+    transparent 39px,
+    transparent 72px
+  ),
+  #805649;
+
+  background-size: 100% 18px, 100% 72px, auto;
 }
 
 .board::before {
@@ -136,17 +254,14 @@ h1 {
   align-items: flex-start;
   margin-bottom: 45px;
   padding: 20px 25px;
-  background:
-    linear-gradient(rgba(255,255,255,.15), rgba(255,255,255,.15)),
-    #f1dfbf;
+  background: #f1dfbf;
   border: 1px solid #76534a;
-  box-shadow: 4px 5px 0 rgba(65, 40, 35, .18);
   transform: rotate(-.4deg);
 }
 
 .board-header h2 {
   margin: 5px 0 0;
-  font-size: 38px;
+  font-size: 42px;
 }
 
 .board-note {
@@ -170,13 +285,17 @@ h1 {
 
 /* TAPE */
 
-.tape {
+/* .tape {
   position: absolute;
   width: 115px;
   height: 27px;
   background: rgba(229, 199, 151, .78);
   border: 1px solid rgba(120, 94, 64, .18);
   z-index: 5;
+} */
+
+.tape {
+  display: none;
 }
 
 .tape-one {
@@ -221,9 +340,9 @@ h1 {
 
 /* PAPER TEXTURE */
 
-.paper::before,
-.yellow-paper::before,
-.green-paper::before {
+/* .paper::before,
+/* .yellow-paper::before, */
+/* .green-paper::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -232,6 +351,22 @@ h1 {
   background:
     radial-gradient(circle, #6e4c45 0 .7px, transparent .9px);
   background-size: 9px 9px;
+} */ 
+
+.paper::before,
+.yellow-paper::before,
+.green-paper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: .12;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(100, 75, 60, .08) 0 1px,
+      transparent 1px 4px
+    );
 }
 
 /* PAPER TYPES */
@@ -395,13 +530,19 @@ h1 {
 
 .scribble,
 .handwritten {
-  font-family: "Caveat", cursive;
-  font-size: 21px;
   margin-top: 18px;
 }
 
+.scribble {
+  font-family: "DM Mono", monospace;
+  font-size: 9px;
+  letter-spacing: 1px;
+  opacity: 0.65;
+}
+
 .handwritten {
-  transform: rotate(-3deg);
+  font-family: "Caveat", cursive;
+  font-size: 21px;
 }
 
 /* CHECKERED CARD */
@@ -567,8 +708,8 @@ footer {
   max-width: 1180px;
   margin: 24px auto 0;
   text-align: center;
-  font-size: 10px;
-  color: #563d38;
+  font-size: 20px;
+  color: #271a18;
 }
 
 /* RESPONSIVE */

@@ -6,7 +6,6 @@ class UserCreate(BaseModel):
     email: EmailStr
     password: str
 
-
 class UserResponse(BaseModel):
     id: int
     name: str
@@ -22,7 +21,7 @@ class PostCreate(BaseModel):
     title: str
     content: str
     post_type: str = "announcement"
-
+    user_id: int
 
 class PostResponse(BaseModel):
     id: int
@@ -31,5 +30,21 @@ class PostResponse(BaseModel):
     post_type: str
     created_at: datetime
 
-class Config:
+class CommentCreate(BaseModel):
+    post_id: int
+    user_id: int
+    content: str
+
+class CommentResponse(BaseModel):
+    id: int
+    post_id: int
+    user_id: int
+    content: str
+    created_at: datetime
+
+    class Config:
         from_attributes = True
+
+
+# class Config:
+#         from_attributes = True

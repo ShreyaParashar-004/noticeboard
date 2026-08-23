@@ -30,3 +30,16 @@ class Post(Base):
         server_default=func.now(),
         nullable=False
     )
+
+class Comment(Base):
+    __tablename__ = "comments"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    post_id: Mapped[int] = mapped_column(nullable=False)
+    user_id: Mapped[int] = mapped_column(nullable=False)
+    content: Mapped[str] = mapped_column(String(1000), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        nullable=False
+    )
