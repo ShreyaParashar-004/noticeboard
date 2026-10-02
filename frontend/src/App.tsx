@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type ChangeEvent, type DragEvent, type FormEvent } from "react";
 import "./App.css";
 
-const API = "http://127.0.0.1:8000";
+const API = "https://noticeboard-production-3bb8.up.railway.app";
 
 type Tab = "board" | "album" | "members";
 type LinkCategory = "notice" | "song";
