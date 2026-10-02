@@ -458,6 +458,9 @@ class MoodboardItem(Base):
     title = Column(String, nullable=False)
     images = Column(JSON, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
+    # Legacy single-image column. The existing table still has it as NOT NULL,
+    # so every insert fills it with the first (cover) image.
+    image_url = Column(String, nullable=True)
  
  
 class LinkItem(Base):
