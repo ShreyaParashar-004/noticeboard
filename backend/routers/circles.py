@@ -188,6 +188,50 @@ def get_circle_members(circle_id: int, user_id: int):
         ]
 
 
+
+@router.get("/{circle_id}/pending")
+def get_pending_requests(circle_id: int, admin_user_id: int):
+    with Session(engine) as db:
+        admin = (
+            db.query(CircleMember)
+            .filter(
+                CircleMember.circle_id == circle_id,
+                CircleMember.user_id == admin_user_id,
+                CircleMember.role == "admin",
+                CircleMember.approved == True
+            )
+            .first()
+        )
+
+        if admin is None:
+            raise HTTPException(
+                status_code=403,
+                detail="Only a circle admin can view join requests."
+            )
+
+        pending = (
+            db.query(CircleMember, User)
+            .join(User, User.id == CircleMember.user_id)
+            .filter(
+                CircleMember.circle_id == circle_id,
+                CircleMember.approved == False
+            )
+            .order_by(CircleMember.created_at.asc())
+            .all()
+        )
+
+        return [
+            {
+                "id": member.id,
+                "user_id": member.user_id,
+                "name": user.name,
+                "email": user.email
+            }
+            for member, user in pending
+        ]
+
+
+
 @router.patch(
     "/{circle_id}/members/{member_id}/approve",
     response_model=CircleMemberResponse

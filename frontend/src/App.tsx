@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState, type ChangeEvent, type DragEvent, type FormEvent } from "react";
 import "./App.css";
-
+import PendingRequests from "./pending";
 const API = "https://noticeboard-production-3bb8.up.railway.app";
+// const API = "http://127.0.0.1:8000";
+import CircleOnboarding from "./Circle";
 
 type Tab = "board" | "album" | "members";
 type LinkCategory = "notice" | "song";
@@ -108,6 +110,10 @@ function App() {
   const [circleMembers, setCircleMembers] = useState<CircleMember[]>([]);
   const [activeTab, setActiveTab] = useState<Tab>("board");
 
+  const [circlesLoaded, setCirclesLoaded] = useState(false);
+  const [circlesError, setCirclesError] = useState("");
+  const [showCircleModal, setShowCircleModal] = useState(false);
+
   const [showCreatePost, setShowCreatePost] = useState(false);
   const [postTitle, setPostTitle] = useState("");
   const [postContent, setPostContent] = useState("");
@@ -179,11 +185,16 @@ function App() {
 
   const isSelectedCircleAdmin = currentMembership?.role === "admin";
 
+  const needsCircleOnboarding =
+    !!loggedInUser && circlesLoaded && circles.length === 0;
+
   const albumPhotos = albumItems.filter((item) => item.item_type === "photo");
   const songLinks = links.filter((link) => link.category === "song");
   const noticeLinks = links.filter((link) => link.category === "notice");
 
-  const fetchCircles = async () => {
+  const fetchCircles = async (userId: number) => {
+    setCirclesError("");
+
     try {
       const response = await fetch(`${API}/circles/`);
       const data = await response.json();
@@ -192,16 +203,36 @@ function App() {
         throw new Error(data.detail || "Failed to fetch circles.");
       }
 
-      setCircles(data);
+      // GET /circles/ returns every circle. Keep only the ones this user is an
+      // approved member of (the members endpoint answers 403 for everyone else).
+      const checked: (Circle | null)[] = await Promise.all(
+        (data as Circle[]).map(async (circle) => {
+          const check = await fetch(
+            `${API}/circles/${circle.id}/members?user_id=${userId}`
+          );
 
-      if (data.length > 0) {
-        setSelectedCircle((current) => current ?? data[0]);
-      }
+          if (check.ok) return circle;
+          if (check.status === 403) return null;
+          throw new Error("Failed to check circle membership.");
+        })
+      );
+
+      const mine = checked.filter(
+        (circle): circle is Circle => circle !== null
+      );
+
+      setCircles(mine);
+      setSelectedCircle((current) =>
+        current && mine.some((circle) => circle.id === current.id)
+          ? current
+          : mine[0] ?? null
+      );
+      setCirclesLoaded(true);
     } catch (error) {
       console.error("Failed to fetch circles:", error);
+      setCirclesError("Could not load your circles.");
     }
   };
-
   const fetchPosts = async (circleId: number) => {
     try {
       const response = await fetch(`${API}/posts/circle/${circleId}`);
@@ -370,7 +401,7 @@ function App() {
         name: data.name,
       });
 
-      await fetchCircles();
+      await fetchCircles(data.user_id);
 
       setShowLogin(false);
       setLoginEmail("");
@@ -1005,6 +1036,10 @@ function App() {
     setMoodboard([]);
     setLinks([]);
     setPdfs([]);
+
+    setCirclesLoaded(false);
+    setCirclesError("");
+    setShowCircleModal(false);
   };
 
   const countVotes = (poll: PollItem, option: string) =>
@@ -1012,7 +1047,7 @@ function App() {
 
   useEffect(() => {
     if (loggedInUser) {
-      fetchCircles();
+      fetchCircles(loggedInUser.user_id);
     }
   }, [loggedInUser]);
 
@@ -1106,6 +1141,24 @@ function App() {
       </header>
 
       <main className="board">
+
+        {loggedInUser && !circlesLoaded && (
+          <>
+            <p className="no-comments">
+              {circlesError || "loading your circles..."}
+            </p>
+
+            {circlesError && (
+              <button
+                className="circle-button"
+                onClick={() => fetchCircles(loggedInUser.user_id)}
+              >
+                try again
+              </button>
+            )}
+          </>
+        )}
+
         <div className="circle-bar">
           <div className="circle-selector">
             {circles.map((circle) => (
@@ -1121,6 +1174,14 @@ function App() {
                 {circle.name}
               </button>
             ))}
+            {loggedInUser && circlesLoaded && (
+              <button
+                className="circle-button"
+                onClick={() => setShowCircleModal(true)}
+              >
+                + circle
+              </button>
+            )}
           </div>
 
           {selectedCircle && (
@@ -1613,6 +1674,19 @@ function App() {
                 ))
               )}
             </div>
+
+            {isSelectedCircleAdmin && selectedCircle && loggedInUser && (
+              <PendingRequests
+                key={selectedCircle.id}
+                api={API}
+                circleId={selectedCircle.id}
+                adminUserId={loggedInUser.user_id}
+                onApproved={() =>
+                  fetchCircleMembers(selectedCircle.id, loggedInUser.user_id)
+                }
+              />
+            )}
+
           </section>
         )}
       </main>
@@ -2006,6 +2080,24 @@ function App() {
             </form>
           </div>
         </div>
+      )}
+
+      {loggedInUser && (showCircleModal || needsCircleOnboarding) && (
+        <CircleOnboarding
+          api={API}
+          userId={loggedInUser.user_id}
+          hasCircles={circles.length > 0}
+          onClose={() => setShowCircleModal(false)}
+          onCreated={(circle) => {
+            setCircles((current) => [
+              circle,
+              ...current.filter((c) => c.id !== circle.id),
+            ]);
+            setSelectedCircle(circle);
+            setShowCircleModal(true);
+          }}
+          onLogout={handleLogout}
+        />
       )}
     </div>
   );
