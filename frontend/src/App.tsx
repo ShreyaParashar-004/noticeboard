@@ -1450,10 +1450,10 @@ function App() {
               </div>
 
               <div className="notice-section">
-                <p className="small-label">DOCUMENTS</p>
+                <p className="small-label"> </p>
 
                 {pdfs.length === 0 ? (
-                  <p className="notice-empty">no documents yet.</p>
+                  <p className="notice-empty"> --- </p>
                 ) : (
                   <div className="notice-links">
                     {pdfs.map((pdf) => (
